@@ -1,125 +1,638 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Diabetes Dataset Analysis</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .plot-section {
-            margin-bottom: 40px;
-        }
-        .plot-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .plot-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        }
-        .description {
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Styl — Find Your Perfect Outfit Dupe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0e0d0c;
+      --cream:   #f7f4ef;
+      --warm:    #ede8e0;
+      --blush:   #c9a98a;
+      --deep:    #1a1714;
+      --muted:   #7a746c;
+      --serif:   'Cormorant Garamond', Georgia, serif;
+      --sans:    'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(247, 244, 239, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,169,138,0.2);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: drift 12s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #d4b896, #c9a98a);
+      top: -100px; right: -100px;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #e8d5c4, #dcc5b0);
+      bottom: -50px; left: -80px;
+      animation-delay: -4s;
+    }
+
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #f0e6da, #e8d8c8);
+      top: 40%; left: 30%;
+      animation-delay: -8s;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--blush);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2.2rem;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.12);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover::after { opacity: 1; }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .btn-primary:hover {
+      background: var(--deep);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(14,13,12,0.25);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid rgba(14,13,12,0.3);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--ink);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(14,13,12,0.1);
+    }
+
+    /* ── Floating scroll indicator ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bob 2.5s ease-in-out infinite;
+    }
+
+    .scroll-hint svg { opacity: 0.5; }
+
+    @keyframes bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── How it works ── */
+    .section {
+      padding: 7rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 4rem;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2px;
+    }
+
+    .step {
+      background: var(--warm);
+      padding: 2.5rem;
+      transition: background 0.3s, transform 0.3s;
+      cursor: default;
+    }
+
+    .step:hover {
+      background: var(--blush);
+      transform: translateY(-4px);
+    }
+
+    .step:hover .step-num,
+    .step:hover .step-title,
+    .step:hover .step-desc { color: var(--cream); }
+
+    .step-num {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 300;
+      color: rgba(14,13,12,0.15);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: color 0.3s;
+    }
+
+    .step-title {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      transition: color 0.3s;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      transition: color 0.3s;
+    }
+
+    /* ── Features strip ── */
+    .features-strip {
+      background: var(--ink);
+      padding: 5rem 3rem;
+    }
+
+    .features-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 3rem;
+    }
+
+    .feature {
+      color: var(--cream);
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+      color: var(--blush);
+    }
+
+    .feature-desc {
+      font-size: 0.82rem;
+      color: rgba(247,244,239,0.55);
+      line-height: 1.7;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 8rem 3rem;
+      background: var(--warm);
+    }
+
+    .cta-section .section-title { margin-bottom: 1.5rem; }
+
+    .cta-section p {
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--blush);
+      margin: 0 auto 2rem;
+    }
+
+    /* ── Privacy ── */
+    #privacy {
+      padding: 7rem 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    #privacy h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+
+    #privacy .updated {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 3rem;
+    }
+
+    #privacy h2 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin: 2.5rem 0 0.75rem;
+      color: var(--ink);
+    }
+
+    #privacy p, #privacy li {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+    }
+
+    #privacy ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #privacy a { color: var(--blush); text-decoration: none; }
+    #privacy a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--deep);
+      color: rgba(247,244,239,0.4);
+      text-align: center;
+      padding: 2.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    footer a { color: var(--blush); text-decoration: none; }
+
+    /* ── Floating "back to top" button ── */
+    .fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s, background 0.2s;
+      z-index: 200;
+    }
+
+    .fab.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fab:hover { background: var(--blush); }
+
+    @media (max-width: 640px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .section { padding: 5rem 1.5rem; }
+      #privacy { padding: 5rem 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1> Diabetes Dataset Analysis Dashboard</h1>
-        <div class="nav-buttons">
-            <button onclick="showPlot(1)">Glucose Distribution</button>
-            <button onclick="showPlot(2)">Age vs BMI</button>
-            <button onclick="showPlot(3)">Blood Pressure Analysis</button>
-            <button onclick="showPlot(4)">Feature Relationships</button>
-            <button onclick="showPlot(5)">Average Glucose Levels by Outcome</button>
-        </div>
-        
-        <div id="plot-display" class="plot-container">
-            <img src="{{ url_for('static', filename='plot1.png') }}" alt="Plot 1" id="current-plot">
-        </div>
-        
-        <div id="plot-description" class="description">
-            <h3>Glucose Distribution</h3>
-            <p>This plot shows the distribution of glucose levels in the dataset. The bell curve indicates the normal distribution of glucose measurements across the population.</p>
-        </div>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">Styl</a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <p class="hero-eyebrow">Outfit intelligence</p>
+    <h1 class="hero-title">
+      Find your<br/><em>perfect dupe</em>
+    </h1>
+    <p class="hero-sub">
+      Connect your Pinterest boards. Styl finds exact clothing matches across the web — ranked by price, material quality, and real value.
+    </p>
+    <div class="hero-buttons">
+      <a href="#how-it-works" class="btn btn-primary">See how it works</a>
+      <a href="#features" class="btn btn-outline">Explore features</a>
     </div>
 
-    <script>
-        function showPlot(plotNumber) {
-            const plotDisplay = document.getElementById('current-plot');
-            const descriptionDiv = document.getElementById('plot-description');
+    <div class="scroll-hint">
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+        <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="8" cy="8" r="2" fill="currentColor">
+          <animate attributeName="cy" values="8;14;8" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      Scroll
+    </div>
+  </section>
 
-            plotDisplay.src = `/static/plot${plotNumber}.png`;
+  <!-- How it works -->
+  <div id="how-it-works" class="section">
+    <p class="section-label">The process</p>
+    <h2 class="section-title">From pin to<br/><em style="font-style:italic;font-family:var(--serif)">perfect find</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Connect Pinterest</div>
+        <p class="step-desc">Securely link your account in one click. Pick which boards to scan — outfits, wishlist, inspo, anything.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Visual matching</div>
+        <p class="step-desc">A local AI model reads each pin visually — silhouette, color, garment type — and searches across hundreds of retailers.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Quality scoring</div>
+        <p class="step-desc">Every result is scored by material composition vs price. No more guessing if the Shein version is actually the same fabric.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Shop smarter</div>
+        <p class="step-desc">Get a ranked list of dupes with buy links, material breakdowns, and a plain-English verdict on each one.</p>
+      </div>
+    </div>
+  </div>
 
-            // Update description based on plot number
-            const descriptions = {
-                1: {
-                    title: "Glucose Distribution",
-                    text: "This plot shows the distribution of glucose levels in the dataset. The bell curve indicates the normal distribution of glucose measurements across the population."
-                },
-                2: {
-                    title: "Age vs BMI Scatter Plot",
-                    text: "This scatter plot visualizes the relationship between age and BMI, with points colored by diabetes outcome. It helps identify any patterns between these variables and diabetes status."
-                },
-                3: {
-                    title: "Blood Pressure Analysis",
-                    text: "This boxplot compares blood pressure distributions between diabetic and non-diabetic patients, showing the median, quartiles, and potential outliers."
-                },
-                4: {
-                    title: "Feature Relationships",
-                    text: "The pair plot shows relationships between multiple variables simultaneously, helping identify patterns and correlations between different features."
-                },
-                5: {
-                    title: "Average Glucose Levels by Outcome",
-                    text: "This bar plot compares the average glucose levels between individuals with and without diabetes, illustrating the difference in glucose levels across these groups."
-                }
-            };
+  <!-- Features strip -->
+  <div id="features" class="features-strip">
+    <div class="features-inner">
+      <div class="feature">
+        <div class="feature-icon">🧵</div>
+        <div class="feature-title">Material transparency</div>
+        <p class="feature-desc">See the exact fabric composition of every result — 95% cotton vs 100% polyester — so you buy what you're actually paying for.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💸</div>
+        <div class="feature-title">True price comparison</div>
+        <p class="feature-desc">Styl finds the cheapest version of each item across ASOS, Zara, H&M, Shein and more — same look, best price.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Fully private</div>
+        <p class="feature-desc">Everything runs locally on your device. Your Pinterest data, pins, and searches never leave your laptop.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✦</div>
+        <div class="feature-title">Zero ongoing cost</div>
+        <p class="feature-desc">No subscriptions. No API bills. The AI model runs on your machine, and all searches use free public web data.</p>
+      </div>
+    </div>
+  </div>
 
-            descriptionDiv.innerHTML = `
-                <h3>${descriptions[plotNumber].title}</h3>
-                <p>${descriptions[plotNumber].text}</p>
-            `;
-        }
-    </script>
+  <!-- CTA -->
+  <div class="cta-section">
+    <p class="section-label">Get started</p>
+    <h2 class="section-title">Stop overpaying.<br/>Start finding.</h2>
+    <div class="divider"></div>
+    <p>Styl is a free, open-source personal tool.<br/>Run it locally in under five minutes.</p>
+    <a href="https://github.com/mia-khan/styl" class="btn btn-primary">View on GitHub</a>
+  </div>
+
+  <!-- Privacy Policy -->
+  <div id="privacy">
+    <p class="section-label">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: June 2026</p>
+
+    <p>At Styl, accessible at <strong>mia-khan.github.io/styl</strong>, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Styl and how we use it.</p>
+    <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at <a href="mailto:privacy@styl.com">privacy@styl.com</a>.</p>
+
+    <h2>Consent</h2>
+    <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
+
+    <h2>Information We Collect</h2>
+    <p>Styl is a locally-run personal tool. When you use Styl, the following applies:</p>
+    <ul>
+      <li>Your Pinterest credentials and board data are stored exclusively on your own device.</li>
+      <li>No personal data is transmitted to Styl servers, because Styl has no servers.</li>
+      <li>If you contact us directly, we may receive your name and email address.</li>
+    </ul>
+
+    <h2>How We Use Your Information</h2>
+    <p>Any information voluntarily provided (e.g. via email contact) is used solely to respond to your inquiry. We do not sell, share, or use your data for marketing purposes.</p>
+
+    <h2>Log Files</h2>
+    <p>GitHub Pages (which hosts this website) follows standard procedure of using log files. These may include IP addresses, browser type, ISP, date and time stamps, and referring pages. This information is not linked to personally identifiable information. See <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#data-collection" target="_blank">GitHub's data collection policy</a> for details.</p>
+
+    <h2>Cookies</h2>
+    <p>This website does not use cookies. The Styl application itself runs entirely locally and sets no cookies.</p>
+
+    <h2>CCPA Privacy Rights</h2>
+    <p>California consumers have the right to request disclosure of personal data collected, request deletion of personal data, and opt out of the sale of personal data. Styl does not sell personal data. To exercise your rights, contact us at <a href="mailto:privacy@styl.com">privacy@styl.com</a>. We will respond within one month.</p>
+
+    <h2>GDPR Data Protection Rights</h2>
+    <p>You are entitled to the right to access, rectify, erase, restrict, or port your personal data, and to object to its processing. Since Styl stores no personal data on external servers, these rights are satisfied by design. For any inquiries, contact <a href="mailto:privacy@styl.com">privacy@styl.com</a>.</p>
+
+    <h2>Children's Information</h2>
+    <p>Styl does not knowingly collect personal information from children under 13. If you believe a child has provided personal information through our contact channels, please contact us immediately.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Changes will be reflected by the updated date at the top of this page.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 Styl &nbsp;·&nbsp; <a href="#privacy">Privacy Policy</a> &nbsp;·&nbsp; <a href="https://github.com/mia-khan/styl">GitHub</a></p>
+  </footer>
+
+  <!-- Floating back-to-top -->
+  <button class="fab" id="fab" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 12V4M4 7l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script>
+    const fab = document.getElementById('fab');
+    window.addEventListener('scroll', () => {
+      fab.classList.toggle('visible', window.scrollY > 400);
+    });
+  </script>
+
 </body>
 </html>
-
-
